@@ -22,3 +22,54 @@
     procedure, passing N=47. The first value in the array will be 1, and the last value will be 2,971,215,073. Use the visual studio 
     debugger to open and inspect the array contents.
     
+;Fibonacci Sequence
+
+ExitProcess proto
+WriteInt64  proto
+Crlf	    proto
+
+.data
+nMinus2 QWORD 0
+nMinus1 QWORD 1
+n	    QWORD ?
+
+.code
+main proc
+
+	;set the loop counter to 47
+	mov rcx,47
+
+	;print nMinus2
+	mov rax, nMinus2
+	call WriteInt64
+	call Crlf
+
+	;print nMinus1
+	mov rax, nMinus1
+	call WriteInt64 
+	call Crlf
+
+	STARTLOOP:
+	;set n = nMinus2 + nMinus1	;1 + 1
+	mov r9, nMinus2
+	add r9, nMinus1
+	mov n, r9
+
+	;print n
+	mov rax, n
+	call WriteInt64
+	call Crlf
+
+	; nMinus2 = nMinus1
+	mov r9, nMinus1
+	mov nMinus2, r9
+
+	;nMinus1 = n
+	mov r9, n
+	mov nMinus1, r9
+	LOOP STARTLOOP
+
+	mov ecx,0
+	call ExitProcess
+main endp
+end
