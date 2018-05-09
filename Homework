@@ -2,19 +2,64 @@
 7. Write a program that displays a single character at 100 random screen locations, using a timing delay of 100 milliseconds. HINT: Use
     the GetMaxXY procedure to determine the current size of the console window.
 
+; 5.9 #7
 
+.386
+.model flat,stdcall
+.stack 4096
+ExitProcess proto,dwExitCode:dword
+GetMaxXY	proto
+RandomRange proto
+Gotoxy		proto
+WriteChar	proto
+Delay		proto
 
+.data
+xVal BYTE ?
+yVal BYTE ?
+numberRows BYTE ?
+numberCols BYTE ?
 
+.code
+main proc				
+	
+	mov ecx, 100
+	
+	POOPLOOP:
+		;get a random location
+			call GetMaxXY
+			mov numberCols, dl			;maxX in edx
+			mov numberRows, al			;maxY in eax
 
+			;Get randomn column to display in
+			mov al, numberCols
+			inc al
+			call RandomRange
+			mov xVal, al
 
+			;Get random row to display in
+			mov al, numberRows
+			inc al
+			call RandomRange
+			mov yVal, al
 
+			;Mov cursor to x,y coordinate we just calculated
+			mov dh, yVal
+			mov dl, xVal
+			call Gotoxy		;locate cursor
 
+			;print character at x,y
+			mov al, 'A'
+			call WriteChar
 
+			mov eax, 100
+			call Delay
 
+	LOOP POOPLOOP
 
-
-
-
+	invoke ExitProcess,0
+main endp
+end main
 
 
 10. Write a procedure that produces N values in the Fibonacci number series and stores them in an array of doubleword. Input parameters 
